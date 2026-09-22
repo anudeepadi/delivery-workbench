@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const TICKER_ITEMS = [
-  { label: "AKB1 v2.0", val: "ACTIVE", col: "var(--green)" },
+  { label: "Workbench v2.0", val: "ACTIVE", col: "var(--green)" },
   { label: "Delivery Margin Target", val: "≥28%", col: "var(--gold)" },
   { label: "PI Predictability Target", val: "≥80%", col: "var(--blue)" },
   { label: "Utilization Target", val: "≥80%", col: "var(--cyan)" },
@@ -14,7 +14,7 @@ const TICKER_ITEMS = [
   { label: "CPI Target", val: "≥1.0", col: "var(--gold)" },
   { label: "Sprint Velocity Stability", val: "±15% variance", col: "var(--blue)" },
   { label: "Gemini API", val: "READY", col: "var(--purple)" },
-  { label: "AKB1 Terminal", val: "BLOOMBERG MODE", col: "var(--cyan)" },
+  { label: "Delivery Workbench", val: "PLANNING PROTOTYPE", col: "var(--cyan)" },
 ];
 
 export default function Ticker() {

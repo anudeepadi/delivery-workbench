@@ -1,139 +1,110 @@
-# AKB1 Command Center
+# Delivery Workbench
 
-**The Operating System for Elite Delivery Leaders**
+A delivery-planning workspace for KPI calculations, risk assessment, sprint capacity, estimates, and AI-assisted analysis.
 
-A Bloomberg Terminal-inspired command center with 12 live modules, 9 KPI calculators, streaming AI assistance, and a curated prompt toolkit — built for Senior PMs, RTEs, and CTOs who operate at enterprise scale.
+Delivery Workbench brings a set of related planning tools into one keyboard-accessible interface. It combines a React client with an Express server, local SQLite persistence, and optional streaming Gemini chat. The project demonstrates a compact full-stack application that can run as a single service.
 
-**[Live Demo →](https://akb1-command-center-production.up.railway.app)**
+![Delivery Workbench showing its KPI calculator workspace](docs/images/kpi-workbench.png)
 
----
+*Actual local application with seeded example data. Previously named AKB1 Command Center.*
 
-## Why This Exists
+**Status:** portfolio prototype. The previous hosted demo is unavailable; the local walkthrough below is the supported starting point.
 
-Enterprise delivery leaders juggle 10+ disconnected tools — spreadsheets for KPIs, separate risk trackers, manual status reports, generic AI chatbots. None of them speak the language of delivery operations.
+[Run locally](#run-locally) · [Architecture](#architecture) · [Code guide](#code-guide)
 
-AKB1 replaces all of that with a single, keyboard-driven interface where every tool is one keystroke away.
+## Capabilities
 
----
+| Area | Included tools |
+| --- | --- |
+| Delivery planning | Sprint capacity, estimation, pricing, decision comparison |
+| Reporting | KPI calculators, risk register, status-report drafts |
+| AI assistance | Streaming chat with saved sessions and a delivery-oriented system prompt |
+| Prompt tooling | Prompt templates, a structured prompt builder, and model guidance |
+| Workspace | Command palette, responsive navigation, persisted tool drafts |
 
-## What's Inside
-
-### Core Modules
-
-| Module | What It Does |
-|--------|-------------|
-| **KPI Engine** | 9 live calculators — Utilization, Margin, Velocity, CPI, SLA, SPI, CFR, Attrition, PI Predictability — with formulas, industry benchmarks, and worked examples |
-| **Risk Heat Map** | Interactive 5×5 probability × impact matrix with a live risk register and export |
-| **Sprint & PI Planner** | SAFe-aligned capacity calculator with team parameters, velocity modeling, and innovation buffer |
-| **Pricing Calculator** | Bill rate derivation, T&M vs fixed price comparison, and full team cost modeling with leverage analysis |
-| **Decision Matrix** | Structured decision framework generating Conservative / Balanced / Strategic options with AI-backed recommendations |
-| **Estimation Engine** | PERT 3-point, T-shirt sizing, and delivery forecasting with cost modeling |
-| **Status Report Generator** | RAG-based executive report builder with metrics, decisions, and risks — copy-paste ready |
-
-### AI & Prompt Tools
-
-| Module | What It Does |
-|--------|-------------|
-| **AI Terminal** | Streaming Gemini AI calibrated with a delivery-specific system prompt — persistent chat sessions stored in SQLite |
-| **Prompt Lab** | 9 "cheat codes" (reusable prompt patterns) with a live prompt analyzer and quality scoring |
-| **Prompt Builder** | Role → Task → Format → Constraint assembler that generates copy-paste prompts with strength scoring |
-| **AI Arsenal** | Runtime profiles (Gemini Flash, Flash-Lite), routing guide, and model comparison |
-
-### Platform Features
-
-- **Command Palette** — `Cmd+K` to jump to any module instantly
-- **Persistent State** — Risk registers, status reports, and chat sessions survive across sessions via SQLite
-- **Responsive Design** — Full mobile support with adaptive sidebar, panel toggling, and touch-friendly interactions
-- **Bloomberg Aesthetic** — Dark terminal workspace contrasted against a warm marketing landing page
-
----
+Calculators and reports operate on entered values and seeded examples. They are not automatic integrations with a company's delivery systems. Without a Gemini key, chat uses a demonstration response.
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────┐
-│                   Client (Vite)                  │
-│  React 18 · Tailwind · Framer Motion · Radix UI │
-│  TanStack Query · Wouter (hash routing)          │
-├─────────────────────────────────────────────────┤
-│                 Express Server                   │
-│  Bootstrap API · Chat Sessions · SSE Streaming   │
-│  Tool Draft Persistence · Static File Serving    │
-├─────────────────────────────────────────────────┤
-│              SQLite (Drizzle ORM)                │
-│  chat_sessions · messages · tool_drafts          │
-│  app_state · modules                             │
-├─────────────────────────────────────────────────┤
-│               Gemini API (SSE)                   │
-│  gemini-2.5-flash · Delivery system prompt       │
-│  20-message context window · Demo fallback       │
-└─────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    User["Browser"] --> UI["React, Vite and TanStack Query"]
+    UI -->|HTTP and SSE| API["Express application"]
+    API --> Store["Storage layer: node:sqlite"]
+    Store --> DB[("SQLite file")]
+    API -->|configured chat requests| Gemini["Gemini API"]
+    Gemini -->|streamed response| API
+    API -->|no API key| Demo["Demo response"]
+    API --> Static["Built client assets"]
 ```
 
-**Stack:** React 18, TypeScript, Vite, Express 5, SQLite, Drizzle ORM, Gemini API, Tailwind CSS, Framer Motion, Radix UI, TanStack Query
+Persistence uses Node's built-in `node:sqlite` directly. Drizzle-related files remain in the repository, but the running storage layer is [server/storage.ts](server/storage.ts). Express serves the API and the built frontend in production; Vite is attached during development.
 
----
+## Run locally
 
-## Running Locally
+Requires **Node.js 25.6.0 or newer**, as specified by the package, and npm.
 
 ```bash
-# 1. Install
-npm install
-
-# 2. Configure
+git clone https://github.com/anudeepadi/delivery-workbench.git
+cd delivery-workbench
+npm ci
 cp .env.example .env
-# Set GEMINI_API_KEY in .env (optional — runs in demo mode without it)
-
-# 3. Start
 npm run dev
-
-# 4. Open
-open http://localhost:5000
 ```
 
-Database stored at `data/akb1.sqlite` by default.
+Open [localhost:5000](http://localhost:5000). SQLite tables and seed data are initialized by the storage layer. No external database service is required.
 
-## Production Build
+| Variable | Default / purpose |
+| --- | --- |
+| `PORT` | `5000` |
+| `HOST` | Loopback in development; all interfaces in production |
+| `SQLITE_DB_PATH` | `data/akb1.sqlite` |
+| `GEMINI_API_KEY` | Optional; enables provider-backed chat |
+| `GEMINI_MODEL` | `gemini-2.5-flash`, subject to provider availability |
+
+The server loads `.env` at startup. Chat requests send conversation context to Gemini when configured; saved history remains in the application's database.
+
+## Five-minute walkthrough
+
+1. Select **Open Workbench** and choose **KPI Engine**.
+2. Change a calculator input and inspect the formula and calculated result.
+3. Open **Risk Matrix** or **Sprint Planner** to explore the sample planning tools.
+4. Edit a tool draft, reload the page and confirm it is restored from SQLite.
+5. Open chat without setting a key to see the clearly labeled demo response.
+
+There is no live connection to a company delivery system. Seeded figures and benchmarks are illustrative and should be reviewed for your context.
+
+## Build and check
 
 ```bash
+npm run check
 npm run build
-npm run start
+npm start
 ```
 
-## Deploy to Railway
+Type checking, the production build, health endpoint, local draft persistence and no-key chat were checked on 22 September 2026 with Node.js 26.9.0. No Gemini requests were made.
 
-This repo includes a `Dockerfile` with a pinned Node runtime that supports `node:sqlite`.
+`GET /api/health` is the health endpoint. There is no test command declared in the package; type checking and building are the available baseline checks.
 
-1. Push to GitHub
-2. Create a new Railway project from the repo
-3. Add a volume mounted at `/app/data`
-4. Set environment variables:
+For a container deployment, use the included [Dockerfile](Dockerfile) and persist the SQLite directory on a volume. A disposable container filesystem will not preserve chat history or drafts across replacements.
 
-```
-NODE_ENV=production
-GEMINI_API_KEY=your_key_here
-GEMINI_MODEL=gemini-2.5-flash
-SQLITE_DB_PATH=/app/data/akb1.sqlite
-```
+## Code guide
 
-5. Deploy — Railway injects `PORT` automatically
+| Path | Responsibility |
+| --- | --- |
+| [client/src/components/tabs/](client/src/components/tabs/) | Planning and reporting modules |
+| [client/src/hooks/use-tool-draft.ts](client/src/hooks/use-tool-draft.ts) | Draft persistence from the UI |
+| [server/routes.ts](server/routes.ts) | Bootstrap, sessions, drafts, and streaming chat |
+| [server/storage.ts](server/storage.ts) | SQLite schema, seeds, and data access |
+| [shared/contracts.ts](shared/contracts.ts) | Client/server domain contracts |
+| [script/build.ts](script/build.ts) | Frontend and server build |
 
-**Health check:** `GET /api/health`
+## Scope and contributions
 
----
+This is a portfolio application with a shared workspace, not a tenant-isolated enterprise product. The current routes do not provide per-user authentication and authorization. Keep personal experimentation local; hosted multi-user use needs an access-control design.
 
-## Project Context
-
-This was built as a portfolio project to demonstrate:
-
-- **Full-stack TypeScript** — shared types between client and server, strict mode, zero `any`
-- **Real-time AI integration** — SSE streaming from Gemini with persistent session management
-- **Domain-driven design** — 12 modules built around actual enterprise delivery workflows (SAFe, KPIs, risk management, pricing)
-- **Production deployment** — Dockerized, Railway-hosted, SQLite persistence with volume mounts
-- **UI/UX engineering** — Bloomberg-inspired terminal aesthetic, command palette, Framer Motion animations, responsive design
-
----
+Useful contributions include calculator examples, input validation, accessibility improvements, and tests for persistence and streaming. Describe the affected module and include steps to reproduce any behavior change.
 
 ## License
 
-MIT
+[package.json](package.json) declares MIT, but a standalone license file is not currently tracked. Clarify repository-wide licensing before redistributing a release.

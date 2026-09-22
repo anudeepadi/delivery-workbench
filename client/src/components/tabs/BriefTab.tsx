@@ -9,7 +9,7 @@ const STATS = [
   {
     label: "Profile Version",
     val: "v2.0",
-    sub: "AKB1 March 2026",
+    sub: "Delivery planning brief",
     col: "var(--blue)",
   },
   {
@@ -26,7 +26,7 @@ const STATS = [
   },
   {
     label: "KPI Modules",
-    val: "15",
+    val: "9",
     sub: "Interactive calculators",
     col: "var(--green)",
   },
@@ -69,7 +69,7 @@ export default function BriefTab({ setActiveTab }: Props) {
       <div className="tab-intro">
         <h2>⚡ Command Brief</h2>
         <p>
-          Your AKB1 personal operating system — calibrated for executive
+          Your delivery planning workspace — calibrated for executive
           delivery and technology strategy.
         </p>
       </div>

@@ -5,7 +5,7 @@ import { storage } from "./storage";
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 const GEMINI_API_BASE = "https://generativelanguage.googleapis.com/v1beta";
 
-const SYSTEM_PROMPT = `You are AKB1 — an elite AI assistant embedded inside the AKB1 Bloomberg Terminal, calibrated for Adi Kompalli (Senior Delivery & Program Manager → CTO trajectory). 
+const SYSTEM_PROMPT = `You are the assistant in Delivery Workbench, helping delivery and program managers reason about their plans.
 
 You operate like a Gemini-powered delivery terminal: precise, data-driven, structured.
 
@@ -209,7 +209,7 @@ export async function registerRoutes(httpServer: Server, app: Express) {
       if (!process.env.GEMINI_API_KEY) {
         // Demo mode — streaming mock response
         const demoLines = [
-          "# AKB1 Terminal — Demo Mode\n\n",
+          "# Delivery Workbench — Demo Mode\n\n",
           `**Gemini API key not configured.** Live mode defaults to \`${GEMINI_MODEL}\`.\n\n`,
           "1. Set `GEMINI_API_KEY` in your environment\n",
           `2. Optionally set \`GEMINI_MODEL\` (default: \`${GEMINI_MODEL}\`)\n`,

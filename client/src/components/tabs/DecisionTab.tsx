@@ -62,8 +62,8 @@ export default function DecisionTab({ showToast }: Props) {
       bc: "rgba(227,179,65,.3)",
     },
     {
-      title: "⭐ AKB1 Recommended: Option 2 — Hybrid Build + Adopt",
-      badges: [["AKB1 Recommended", "pill-p"]],
+      title: "⭐ Example recommendation: Option 2 — Hybrid Build + Adopt",
+      badges: [["Example recommendation", "pill-p"]],
       body: "Balances speed-to-value against long-term control. Vendor platform de-risks infrastructure; in-house layers preserve IP and delivery differentiation. Aligns with Infosys Cobalt and TCS AI.Cloud models. Typical margin uplift: 3–5% through automation-driven cost efficiency within 18 months.",
       bg: "rgba(188,140,255,.08)",
       bc: "var(--purple)",
