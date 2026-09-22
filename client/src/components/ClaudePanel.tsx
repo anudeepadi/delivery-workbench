@@ -476,7 +476,7 @@ export default function ClaudePanel({
           </div>
 
           <div className="assistant-composer-meta">
-            ↵ Send · ⇧↵ Newline · Local SQLite history · Gemini live mode
+            ↵ Send · ⇧↵ Newline · Local SQLite history · Gemini optional
           </div>
         </div>
       </div>

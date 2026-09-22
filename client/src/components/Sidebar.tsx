@@ -44,7 +44,7 @@ export default function Sidebar({
       >
         <div className="workspace-sidebar-header">
           <div className="workspace-sidebar-brand">
-            <div className="topbar-mark">AK</div>
+            <div className="topbar-mark">DW</div>
             {!collapsed && (
               <div>
                 <div className="workspace-sidebar-title">Workbench</div>

@@ -1,8 +1,14 @@
-# AKB1 Command Center
+# Delivery Workbench
 
 A delivery-planning workspace for KPI calculations, risk assessment, sprint capacity, estimates, and AI-assisted analysis.
 
-AKB1 brings a set of related planning tools into one keyboard-accessible interface. It combines a React client with an Express server, local SQLite persistence, and optional streaming Gemini chat. The project demonstrates a compact full-stack application that can run as a single service.
+Delivery Workbench brings a set of related planning tools into one keyboard-accessible interface. It combines a React client with an Express server, local SQLite persistence, and optional streaming Gemini chat. The project demonstrates a compact full-stack application that can run as a single service.
+
+![Delivery Workbench showing its KPI calculator workspace](docs/images/kpi-workbench.png)
+
+*Actual local application with seeded example data. Previously named AKB1 Command Center.*
+
+**Status:** portfolio prototype. The previous hosted demo is unavailable; the local walkthrough below is the supported starting point.
 
 [Run locally](#run-locally) · [Architecture](#architecture) · [Code guide](#code-guide)
 
@@ -39,8 +45,8 @@ Persistence uses Node's built-in `node:sqlite` directly. Drizzle-related files r
 Requires **Node.js 25.6.0 or newer**, as specified by the package, and npm.
 
 ```bash
-git clone https://github.com/anudeepadi/AKB1-Command-Center.git
-cd AKB1-Command-Center
+git clone https://github.com/anudeepadi/delivery-workbench.git
+cd delivery-workbench
 npm ci
 cp .env.example .env
 npm run dev
@@ -58,6 +64,16 @@ Open [localhost:5000](http://localhost:5000). SQLite tables and seed data are in
 
 The server loads `.env` at startup. Chat requests send conversation context to Gemini when configured; saved history remains in the application's database.
 
+## Five-minute walkthrough
+
+1. Select **Open Workbench** and choose **KPI Engine**.
+2. Change a calculator input and inspect the formula and calculated result.
+3. Open **Risk Matrix** or **Sprint Planner** to explore the sample planning tools.
+4. Edit a tool draft, reload the page and confirm it is restored from SQLite.
+5. Open chat without setting a key to see the clearly labeled demo response.
+
+There is no live connection to a company delivery system. Seeded figures and benchmarks are illustrative and should be reviewed for your context.
+
 ## Build and check
 
 ```bash
@@ -65,6 +81,8 @@ npm run check
 npm run build
 npm start
 ```
+
+Type checking, the production build, health endpoint, local draft persistence and no-key chat were checked on 22 September 2026 with Node.js 26.9.0. No Gemini requests were made.
 
 `GET /api/health` is the health endpoint. There is no test command declared in the package; type checking and building are the available baseline checks.
 

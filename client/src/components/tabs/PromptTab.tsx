@@ -237,7 +237,7 @@ export default function PromptTab({ showToast }: Props) {
               </div>
               <div>
                 <div style={{ fontSize: "13px", fontWeight: 600 }}>
-                  AKB1 Quality: <span style={{ color: ovCol }}>{grade}</span>
+                  Prompt quality: <span style={{ color: ovCol }}>{grade}</span>
                 </div>
                 <div style={{ fontSize: "11px", color: "var(--sub)" }}>
                   {promptText.split(/\s+/).length} words · {promptText.length}{" "}

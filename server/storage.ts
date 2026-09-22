@@ -212,12 +212,12 @@ const MODULES: ModuleSeedRow[] = [
 ];
 
 const DEFAULT_IDENTITY: WorkspaceIdentity = {
-  name: "AKB1 Local Operator",
+  name: "Local Operator",
   email: "gemini-local@akb1.dev",
-  provider: "Gemini API Key",
+  provider: "Optional Gemini",
   status: "Local workspace access enabled",
-  workspace: "AKB1 Command Center",
-  environment: "SQLite + Gemini",
+  workspace: "Delivery Workbench",
+  environment: "SQLite workspace",
 };
 
 const DEFAULT_HIGHLIGHTS: DashboardHighlight[] = [

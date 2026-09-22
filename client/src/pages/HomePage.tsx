@@ -21,10 +21,10 @@ const TICKER_MODULES = [
 ];
 
 const STATS = [
-  { value: "11", label: "Tool Modules" },
+  { value: "12", label: "Tool Modules" },
   { value: "9", label: "KPI Engines" },
-  { value: "AI", label: "Gemini Powered" },
-  { value: "v2", label: "Bloomberg Mode" },
+  { value: "AI", label: "Optional chat" },
+  { value: "v2", label: "Prototype" },
 ];
 
 const FEATURES = [
@@ -38,7 +38,7 @@ const FEATURES = [
     icon: "◆",
     name: "Gemini AI Terminal",
     description:
-      "Streaming Gemini 2.5 Flash calibrated with AKB1's delivery system prompt. Real answers, zero fluff",
+      "Streaming chat with a delivery planning prompt. Uses a demonstration response until a Gemini key is configured",
   },
   {
     icon: "⚠",
@@ -96,7 +96,7 @@ export default function HomePage({ onLaunch }: Props) {
           transition={{ duration: 0.35 }}
         >
           <span className="status-dot green" />
-          AKB1 Command Center · Bloomberg Mode · v2.0
+          Delivery Workbench · Planning prototype
         </motion.div>
 
         <motion.h1
@@ -105,9 +105,9 @@ export default function HomePage({ onLaunch }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.06, duration: 0.5 }}
         >
-          The Operating System
+          Plan delivery.
           <br />
-          for Elite Delivery Leaders
+          Make tradeoffs visible.
         </motion.h1>
 
         <motion.p
@@ -116,9 +116,9 @@ export default function HomePage({ onLaunch }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.12, duration: 0.5 }}
         >
-          Bloomberg-style command center with 11 live calculators, real-time
-          Gemini AI, and a curated prompt toolkit — built for Senior PMs, RTEs,
-          and CTOs who operate at enterprise scale.
+          KPI calculators, risk tracking, capacity planning and saved drafts
+          in one workspace for delivery leads. Optional Gemini chat helps
+          explore the inputs you provide.
         </motion.p>
 
         <motion.div
@@ -132,10 +132,10 @@ export default function HomePage({ onLaunch }: Props) {
             onClick={() => onLaunch("brief")}
             data-testid="hero-launch"
           >
-            ▶ Launch Terminal
+            ▶ Open Workbench
           </button>
           <a href="#terminal-preview" className="landing-btn-ghost">
-            ◎ See it live
+            ◎ Preview the interface
           </a>
         </motion.div>
 
@@ -178,12 +178,11 @@ export default function HomePage({ onLaunch }: Props) {
         >
           <span className="landing-eyebrow">What&apos;s inside</span>
           <h2 className="landing-section-title">
-            Every tool you actually need
+            Tools for a delivery planning session
           </h2>
           <p className="landing-section-sub">
-            Not a generic PM dashboard. Purpose-built for delivery leadership —
-            each module is tuned to enterprise delivery, SAFe at scale, and
-            AI-augmented operations.
+            Compare estimates, assess risks, plan capacity and prepare status
+            reports. The workspace uses your inputs and illustrative examples.
           </p>
         </motion.div>
 
@@ -219,10 +218,10 @@ export default function HomePage({ onLaunch }: Props) {
         >
           <span className="landing-eyebrow">The Interface</span>
           <h2 className="landing-section-title">
-            Bloomberg-grade command experience
+            A focused planning workspace
           </h2>
           <p className="landing-section-sub">
-            Dark terminal aesthetic. Sidebar navigation. Live Gemini AI panel.
+            Sidebar navigation. Optional Gemini chat.
             Command palette. Every module a keystroke away.
           </p>
         </motion.div>
@@ -241,7 +240,7 @@ export default function HomePage({ onLaunch }: Props) {
               <span className="dot green" />
             </div>
             <span className="preview-titlebar-text">
-              AKB1 Command Center — KPI Engine
+              Delivery Workbench — KPI Engine
             </span>
           </div>
           <div className="preview-body">
@@ -312,7 +311,7 @@ export default function HomePage({ onLaunch }: Props) {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.5 }}
         >
-          Ready to operate at Bloomberg speed?
+          Start with one delivery question.
         </motion.h2>
         <motion.p
           className="landing-footer-sub"
@@ -321,7 +320,7 @@ export default function HomePage({ onLaunch }: Props) {
           viewport={{ once: true, margin: "-60px" }}
           transition={{ delay: 0.06, duration: 0.5 }}
         >
-          11 modules. One interface. Zero wasted clicks.
+          Open the workbench and explore the sample planning inputs.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -333,7 +332,7 @@ export default function HomePage({ onLaunch }: Props) {
             className="landing-btn-primary"
             onClick={() => onLaunch("brief")}
           >
-            Open Terminal →
+            Open Workbench →
           </button>
         </motion.div>
       </section>

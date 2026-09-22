@@ -150,7 +150,7 @@ export default function BuilderTab({ showToast }: Props) {
       <div className="tab-intro">
         <h2>💡 Prompt Builder</h2>
         <p>
-          Step-by-step AKB1 prompt constructor. Pick components → copy assembled
+          Step-by-step delivery prompt constructor. Pick components → copy assembled
           prompt.
         </p>
       </div>
@@ -355,7 +355,7 @@ export default function BuilderTab({ showToast }: Props) {
           <div
             style={{ marginTop: "8px", fontSize: "10px", color: "var(--sub)" }}
           >
-            ~{tokens} tokens · AKB1 strength:{" "}
+            ~{tokens} tokens · Prompt strength:{" "}
             <strong style={{ color: scol }}>{score}%</strong>
           </div>
         </div>

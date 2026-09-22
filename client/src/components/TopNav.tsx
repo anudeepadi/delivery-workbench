@@ -22,7 +22,7 @@ export default function TopNav({
 }: Props) {
   const subtitle =
     page === "home"
-      ? "Operating system for elite delivery leaders"
+      ? "Plan work, compare tradeoffs, track risk"
       : "Delivery workbench";
 
   const primaryLabel =
@@ -42,9 +42,9 @@ export default function TopNav({
       transition={{ type: "spring", damping: 28, stiffness: 260, delay: 0.05 }}
     >
       <div className="topbar-brand">
-        <div className="topbar-mark">AK</div>
+        <div className="topbar-mark">DW</div>
         <div>
-          <div className="topbar-title">AKB1 Command Center</div>
+          <div className="topbar-title">Delivery Workbench</div>
           <div className="topbar-subtitle">{subtitle}</div>
         </div>
       </div>
