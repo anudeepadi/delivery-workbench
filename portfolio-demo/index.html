@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sprint capacity calculator · Delivery Workbench demo</title>
+  <meta name="description" content="Browser-only sprint capacity calculator from Delivery Workbench. Shows the formula and the planning decision behind it.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#capacity-title">Skip to calculator</a>
+
+  <header class="masthead">
+    <div class="wrap">
+      <p class="eyebrow">Delivery Workbench · standalone demo</p>
+      <h1>Sprint capacity, worked out in the open</h1>
+      <p class="lede">Enter your team's sprint and get the available hours, a commitment ceiling and a load check. Every number shows the formula behind it.</p>
+      <p class="scope">Runs entirely in this browser. No server, account, AI service or company data. The full app (React, Express, SQLite) is a <a href="https://github.com/anudeepadi/delivery-workbench">separate project</a>.</p>
+    </div>
+  </header>
+
+  <main class="wrap workbench">
+    <section class="panel inputs" aria-labelledby="capacity-title">
+      <h2 id="capacity-title">Sprint inputs</h2>
+      <form id="calc" novalidate>
+        <div class="field-grid">
+          <div class="field">
+            <label for="people">People</label>
+            <input id="people" name="people" type="number" inputmode="numeric" min="1" max="200" step="1" aria-describedby="people-hint people-err">
+            <p class="hint" id="people-hint">Working on the sprint, 1–200</p>
+            <p class="err" id="people-err"></p>
+          </div>
+          <div class="field">
+            <label for="days">Sprint days</label>
+            <input id="days" name="days" type="number" inputmode="decimal" min="0.5" max="30" step="0.5" aria-describedby="days-hint days-err">
+            <p class="hint" id="days-hint">Working days after holidays, 0.5–30</p>
+            <p class="err" id="days-err"></p>
+          </div>
+          <div class="field">
+            <label for="hours">Hours per day</label>
+            <input id="hours" name="hours" type="number" inputmode="decimal" min="0.5" max="12" step="0.5" aria-describedby="hours-hint hours-err">
+            <p class="hint" id="hours-hint">Scheduled hours per person, 0.5–12</p>
+            <p class="err" id="hours-err"></p>
+          </div>
+          <div class="field">
+            <label for="focus">Focus %</label>
+            <input id="focus" name="focus" type="number" inputmode="decimal" min="1" max="100" step="1" aria-describedby="focus-hint focus-err">
+            <p class="hint" id="focus-hint">Share left after meetings and support, 1–100</p>
+            <p class="err" id="focus-err"></p>
+          </div>
+          <div class="field field-wide">
+            <label for="planned">Planned work, hours <span class="opt">optional</span></label>
+            <input id="planned" name="planned" type="number" inputmode="decimal" min="0" max="100000" step="any" aria-describedby="planned-hint planned-err">
+            <p class="hint" id="planned-hint">Estimated hours of the sprint backlog you intend to commit</p>
+            <p class="err" id="planned-err"></p>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" id="example">Load example</button>
+          <button type="button" id="clear">Clear inputs</button>
+        </div>
+        <p class="note">The example is an illustrative team, not client data.</p>
+      </form>
+    </section>
+
+    <section class="panel ledger" aria-labelledby="ledger-title">
+      <h2 id="ledger-title">Calculation</h2>
+
+      <p id="state-msg" class="state-msg" hidden></p>
+
+      <ol class="lines" id="lines">
+        <li class="line total">
+          <span class="line-label">Available hours</span>
+          <span class="line-value" id="v-available">—</span>
+          <code class="line-formula" id="f-available">people × days × hours per day × focus %</code>
+        </li>
+        <li class="line">
+          <span class="line-label">Commitment ceiling</span>
+          <span class="line-value" id="v-ceiling">—</span>
+          <code class="line-formula" id="f-ceiling">available × 90%</code>
+        </li>
+        <li class="line">
+          <span class="line-label">Planned load</span>
+          <span class="line-value" id="v-load">—</span>
+          <code class="line-formula" id="f-load">planned ÷ available</code>
+        </li>
+      </ol>
+
+      <div class="decision" id="decision" data-status="none">
+        <p class="decision-tag" id="decision-tag">No result</p>
+        <p class="decision-head" id="decision-head" role="status">Enter sprint inputs to see a decision.</p>
+        <p class="decision-body" id="decision-body"></p>
+      </div>
+
+      <h3>What moves the number</h3>
+      <table class="sens">
+        <caption class="vh">Change in available hours for common changes to the current inputs</caption>
+        <thead>
+          <tr><th scope="col">Change</th><th scope="col">Available hours</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">+1 person</th><td id="s-person">—</td></tr>
+          <tr><th scope="row">−1 sprint day (holiday)</th><td id="s-day">—</td></tr>
+          <tr><th scope="row">−10 focus points (meetings)</th><td id="s-focus">—</td></tr>
+        </tbody>
+      </table>
+
+      <p class="note">The thresholds come from the full app's Sprint Planner benchmarks: commit about 90% of capacity, and treat 85–95% utilization as healthy and anything above 95% as overcommitted. They're planning heuristics, not guarantees.</p>
+    </section>
+
+    <section class="panel draft" aria-labelledby="draft-title">
+      <h2 id="draft-title">Delivery draft</h2>
+      <p class="storage-note" id="storage-note">Saving keeps this draft and the inputs above in this browser's local storage, on this device only. Nothing is sent anywhere.</p>
+      <form id="draft" novalidate>
+        <div class="field">
+          <label for="d-name">Sprint name</label>
+          <input id="d-name" name="name" type="text" maxlength="80" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="d-goal">Sprint goal</label>
+          <textarea id="d-goal" name="goal" rows="2" maxlength="280"></textarea>
+        </div>
+        <div class="field">
+          <label for="d-notes">Risks and assumptions</label>
+          <textarea id="d-notes" name="notes" rows="3" maxlength="1000"></textarea>
+        </div>
+        <div class="actions">
+          <button type="button" id="save" class="primary">Save in this browser</button>
+          <button type="button" id="export">Export JSON</button>
+          <button type="button" id="delete">Delete saved draft</button>
+        </div>
+        <p class="draft-status" id="draft-status" role="status"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>The full Delivery Workbench adds KPI, risk, estimate and status tools, SQLite-backed drafts and optional Gemini chat. It runs locally, separately from this page.</p>
+    <p><a href="https://github.com/anudeepadi/delivery-workbench">Source on GitHub</a> · <a href="https://www.heyadi.dev/work/delivery-workbench">Case study</a></p>
+  </footer>
+
+  <script src="demo.js"></script>
+</body>
+</html>

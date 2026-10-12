@@ -9,3 +9,9 @@ data
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
+
+.vercel/
+node_modules/
+.next/
+*.tsbuildinfo
+audit-production.json

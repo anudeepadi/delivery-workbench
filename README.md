@@ -8,9 +8,19 @@ Delivery Workbench brings a set of related planning tools into one keyboard-acce
 
 *Actual local application with seeded example data. Previously named AKB1 Command Center.*
 
-**Status:** portfolio prototype. The previous hosted demo is unavailable; the local walkthrough below is the supported starting point.
+**Status:** portfolio prototype. The previous hosted demo of the full application is unavailable; the local walkthrough below is the supported way to run it.
 
-[Run locally](#run-locally) · [Architecture](#architecture) · [Code guide](#code-guide)
+[Standalone calculator](#standalone-capacity-calculator) · [Run locally](#run-locally) · [Architecture](#architecture) · [Code guide](#code-guide) · [Case study](https://www.heyadi.dev/work/delivery-workbench)
+
+## Standalone capacity calculator
+
+[portfolio-demo/](portfolio-demo/) is a separate, zero-dependency static page: plain HTML, CSS and JavaScript with no build step. It is **not** the full application, and it doesn't use the Express server, SQLite or Gemini.
+
+- It works out sprint capacity as people × days × hours per day × focus %, shows the formula with your numbers substituted in, and checks planned work against a 90% commitment ceiling and an 85–95% load band. Those thresholds come from the full app's Sprint Planner benchmarks and are heuristics, not guarantees.
+- A small delivery draft can be saved to the browser's `localStorage` and read back, or exported as JSON. Nothing leaves the browser. If storage is blocked, the page says so and only export is available.
+- To preview it locally, open `portfolio-demo/index.html` or serve the folder with any static file server. [portfolio-demo/vercel.json](portfolio-demo/vercel.json) configures it as a static site with no framework, install or build step.
+
+Design rationale: [portfolio-demo/DESIGN.md](portfolio-demo/DESIGN.md).
 
 ## Capabilities
 
@@ -66,6 +76,8 @@ The server loads `.env` at startup. Chat requests send conversation context to G
 
 ## Five-minute walkthrough
 
+These steps are for the full application running locally. In this version, drafts persist in SQLite, not in browser storage.
+
 1. Select **Open Workbench** and choose **KPI Engine**.
 2. Change a calculator input and inspect the formula and calculated result.
 3. Open **Risk Matrix** or **Sprint Planner** to explore the sample planning tools.
@@ -98,6 +110,7 @@ For a container deployment, use the included [Dockerfile](Dockerfile) and persis
 | [server/storage.ts](server/storage.ts) | SQLite schema, seeds, and data access |
 | [shared/contracts.ts](shared/contracts.ts) | Client/server domain contracts |
 | [script/build.ts](script/build.ts) | Frontend and server build |
+| [portfolio-demo/](portfolio-demo/) | Standalone browser-only capacity calculator (separate from the app) |
 
 ## Scope and contributions
 
